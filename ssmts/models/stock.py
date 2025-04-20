@@ -10,7 +10,10 @@ Test:
 """
 
 
-class Stock(object):
+from ssmts.models.base import BaseModel
+
+
+class Stock(BaseModel):
     """
     Represents a stock with its attributes and methods for manipulation.
     """
