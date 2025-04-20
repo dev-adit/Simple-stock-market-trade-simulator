@@ -36,6 +36,8 @@ class BaseRegistry(ABC, Generic[T]):
         """
         Retrieve an entity instance by its ID.
         """
+        if cls.STORE_NAME not in cls._store:
+            raise ValueError(f"Store {cls.STORE_NAME} is empty")
         return cls._store[cls.STORE_NAME].get(entityId) or None
 
     @classmethod
