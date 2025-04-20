@@ -7,11 +7,11 @@ from ssmts.models.stock import Stock
 
 # Mock data for testing
 MOCK_DATA = [
-    {"stockId": "STK1", "symbol": "TEA", "stockType": "common", "lastDivident": 0.0, "fixedDivident": 0.0, "parValue": 100.0},
-    {"stockId": "STK2", "symbol": "POP", "stockType": "common", "lastDivident": 8.0, "fixedDivident": 0.0, "parValue": 100.0},
-    {"stockId": "STK3", "symbol": "ALE", "stockType": "common", "lastDivident": 23.0, "fixedDivident": 0.0, "parValue": 60.0},
-    {"stockId": "STK4", "symbol": "GIN", "stockType": "preferred", "lastDivident": 8.0, "fixedDivident": 0.02, "parValue": 100.0},
-    {"stockId": "STK5", "symbol": "JOE", "stockType": "common", "lastDivident": 13.0, "fixedDivident": 0.0, "parValue": 250.0},
+    {"stockId": "STK1", "symbol": "TEA", "stockType": "common", "lastDivident": 0.0, "fixedDivident": 0.0, "parValue": 100.0, "currentPrice": 100.0},
+    {"stockId": "STK2", "symbol": "POP", "stockType": "common", "lastDivident": 8.0, "fixedDivident": 0.0, "parValue": 100.0, "currentPrice": 120.0},
+    {"stockId": "STK3", "symbol": "ALE", "stockType": "common", "lastDivident": 23.0, "fixedDivident": 0.0, "parValue": 60.0, "currentPrice": 80.0},
+    {"stockId": "STK4", "symbol": "GIN", "stockType": "preferred", "lastDivident": 8.0, "fixedDivident": 0.02, "parValue": 100.0, "currentPrice": 90.0},
+    {"stockId": "STK5", "symbol": "JOE", "stockType": "common", "lastDivident": 13.0, "fixedDivident": 0.0, "parValue": 250.0, "currentPrice": 110.0},
 ]
 
 class TestStockLoader(unittest.TestCase):
@@ -57,6 +57,7 @@ class TestStockLoader(unittest.TestCase):
         self.assertEqual(_stock.lastDivident, 0.0)
         self.assertEqual(_stock.fixedDivident, 0.0)
         self.assertEqual(_stock.parValue, 100.0)
+        self.assertEqual(_stock.currentPrice, 100.0)
         self.assertEqual(_stock.stockId, "STK1")
 
         self.assertFalse(StockRegistry.get("INVALID"))

@@ -18,7 +18,8 @@ class TestStock(unittest.TestCase):
             'stockType': 'common',
             'lastDivident': 0.82,
             'fixedDivident': 0.0,
-            'parValue': 100.0
+            'parValue': 100.0,
+            'currentPrice': 150.0
         }
         stock = Stock.from_dict(data)
         self.assertIsInstance(stock, Stock)
@@ -28,6 +29,7 @@ class TestStock(unittest.TestCase):
         self.assertEqual(stock.lastDivident, 0.82)
         self.assertEqual(stock.fixedDivident, 0.0)
         self.assertEqual(stock.parValue, 100.0)
+        self.assertEqual(stock.currentPrice, 150.0)
 
     def test_stock_initialization(self):
 
@@ -37,6 +39,7 @@ class TestStock(unittest.TestCase):
         self.assertEqual(stock.lastDivident, 2.0)
         self.assertEqual(stock.fixedDivident, 0.0)
         self.assertEqual(stock.parValue, 1500.0)
+        self.assertEqual(stock.currentPrice, 0.0)
 
 if __name__ == "__main__":
     unittest.main()

@@ -14,7 +14,7 @@ class Stock(object):
     """
     Represents a stock with its attributes and methods for manipulation.
     """
-    def __init__(self, stockId=None, symbol=None, stockType=None, lastDivident=None, fixedDivident=None, parValue=None):
+    def __init__(self, stockId=None, symbol=None, stockType=None, lastDivident=None, fixedDivident=None, parValue=None, currentPrice=None):
         """
         Initializes a Stock instance with the given attributes.
         
@@ -32,6 +32,7 @@ class Stock(object):
         self.lastDivident = lastDivident if lastDivident is not None else 0.0
         self.fixedDivident = fixedDivident if fixedDivident is not None else 0.0
         self.parValue = parValue if parValue is not None else 0.0
+        self.currentPrice = currentPrice if currentPrice is not None else 0.0
     
     @classmethod
     def from_dict(cls, data):
@@ -45,7 +46,18 @@ class Stock(object):
         stock.lastDivident = data.get('lastDivident')
         stock.fixedDivident = data.get('fixedDivident')
         stock.parValue = data.get('parValue')
+        stock.currentPrice = data.get('currentPrice')
         return stock
+    
+    def set_current_price(self, currentPrice):
+        """
+        Sets the current price of the stock.
+        
+        :param currentPrice: The current price of the stock.
+        """
+        if currentPrice < 0:
+            raise ValueError("Current price cannot be negative.")
+        self.currentPrice = currentPrice
                 
     def __str__(self):
         """
