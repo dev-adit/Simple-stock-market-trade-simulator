@@ -18,11 +18,13 @@ class TradeLoader(BaseLoader[Trade]):
     ENTITY: Trade = Trade
     ENTITY_STORE = None  # The registry where the trade entities will be stored, to be defined later
     
+    INCOMING_TRADE = []
+
     @classmethod
     def getEntities(cls):
         """
         Returns a list of trade entities. This can be replaced with a database call or any other data source.
         """
         # Placeholder for actual data source, replace with actual implementation
-        return []  # Replace with actual data source if needed
+        return cls.INCOMING_TRADE  # Replace with actual data source if needed
     

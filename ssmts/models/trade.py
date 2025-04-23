@@ -1,5 +1,6 @@
 
 from datetime import datetime
+from ssmts.config.constants import TradeType
 from ssmts.models.base import BaseModel
 
 
@@ -30,9 +31,10 @@ class Trade(BaseModel):
             raise ValueError("Quantity must be greater than zero.")
         if self.price <= 0:
             raise ValueError("Price must be greater than zero.")
-        if self.indicator not in ['buy', 'sell']:
+        if self.indicator not in [t.value for t in TradeType]:
             raise ValueError("Indicator must be 'buy' or 'sell'.")
 
+    @classmethod
     def from_dict(cls, data):
         """
         Populates the Trade instance from a dictionary.
@@ -40,7 +42,7 @@ class Trade(BaseModel):
         trade = cls(
             tradeId=data.get('tradeId'),
             stockId=data.get('stockId'),
-            timeStamp=datetime.fromisoformat(data.get('timeStamp')),
+            timeStamp=datetime.fromisoformat(data.get('timestamp')) if data.get('timestamp') else datetime.now(),
             quantity=data.get('quantity'),
             price=data.get('price'),
             indicator=data.get('indicator')

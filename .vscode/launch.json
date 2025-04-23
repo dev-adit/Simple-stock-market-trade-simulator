@@ -37,6 +37,31 @@
             ],
             "jinja": true
         },
+
+        {
+            "name": "Debug Trade Consumer",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "ssmts.services.consumer.trade_sub",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "LOG_LEVEL": "INFO"
+            },
+        },
+        {
+            "name": "Debug Trade Producer",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "ssmts.services.producer.trade_pub",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "LOG_LEVEL": "INFO"
+            },
+        }
     ],
     
 }

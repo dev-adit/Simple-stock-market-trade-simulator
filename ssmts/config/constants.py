@@ -12,3 +12,7 @@ DEFAULT_STOCKS = [
     {'stockId': 'STK4', 'symbol': 'GIN', 'stockType': StockType.PREFERRED.value, 'lastDivident': 8.0, 'fixedDivident': 2.0, 'parValue': 100.0, 'currentPrice': 100.0},
     {'stockId': 'STK5', 'symbol': 'JOE', 'stockType': StockType.COMMON.value, 'lastDivident': 13.0, 'fixedDivident': 0.0, 'parValue': 250.0, 'currentPrice': 250.0},
 ]
+
+class TradeType(enum.Enum):
+    BUY = "BUY"
+    SELL = "SELL"
