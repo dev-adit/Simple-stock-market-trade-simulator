@@ -1,0 +1,55 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Real Time Trade Consumer",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "ssmts.services.consumer.trade_sub",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "LOG_LEVEL": "INFO"
+            },
+        },
+        {
+            "name": "Real Time Trade Publisher",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "ssmts.services.producer.trade_pub",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "LOG_LEVEL": "INFO"
+            },
+        },
+        {
+            "name": "RESTer Service",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "ssmts.services.market_metrics",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "LOG_LEVEL": "INFO"
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Start/ Debug All Services",
+            "configurations": [
+                "Real Time Trade Consumer",
+                "Real Time Trade Publisher",
+                "RESTer Service"
+            ]
+        }
+    ]   
+    
+}
