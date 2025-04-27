@@ -50,6 +50,39 @@ def index():
     """
     return jsonify({"message": "Welcome to the Stock Market Trading System API!"}), HTTPStatus.OK
 
+@app.route('/stocks', methods=['GET'])
+def get_stocks():
+    """
+    Get a list of all stocks in the system.
+    
+    :return: JSON response with the list of stocks.
+    """
+    try:
+        # Assuming StockUtils is already imported and available
+        stocks = StockUtils.get_all_stocks()
+        return jsonify(stocks), HTTPStatus.OK
+    except Exception as e:
+        return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
+    
+@app.route('/stocks/<stock_id>', methods=['GET'])
+def get_stock(stock_id):
+    """
+    Get details of a specific stock by its ID.
+    
+    :param stock_id: The ID of the stock.
+    :return: JSON response with the stock details.
+    """
+    try:
+        # Assuming StockUtils is already imported and available
+        stock = StockUtils.get_stock_details(stock_id)
+        if stock:
+            return jsonify(stock), HTTPStatus.OK
+        else:
+            return jsonify({"error": "Stock not found"}), HTTPStatus.NOT_FOUND
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR 
 
 @app.route('/calculate/peRatio/<stock_id>/<stock_price>', methods=['GET'])
 def calculate_pe_ratio(stock_id, stock_price):
@@ -88,7 +121,7 @@ def calculate_dividend_yield(stock_id, stock_price):
         return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
         
 
-@app.route('/GBCE/index', methods=['GET'])
+@app.route('/gbce-all-share-index', methods=['GET'])
 def calculate_gbce_index():
     """
     Calculate the GBCE All Share Index.
@@ -105,7 +138,7 @@ def calculate_gbce_index():
         return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
 
 
-@app.route('/vwsp/<stock_id>', methods=['GET'])
+@app.route('/trade/volume-weighted-stock-price/<stock_id>', methods=['GET'])
 def calculate_vwsp(stock_id):
     """
     Calculate the Volume Weighted Stock Price (VWSP) for a given stock ID.

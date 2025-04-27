@@ -8,6 +8,20 @@ from ssmts.data.store.trade_snapshot_registry import TradeSnapShotRegistry
 class StockUtils:
 
     @staticmethod
+    def get_all_stocks() -> list:
+        """
+        Retrieve all stocks from the stock registry.
+
+        :return: A list of all stocks.
+        """
+        _stocks = StockRegistry.get_all()
+        _stocks_list = []
+        for symbol, stock in _stocks.items():
+            _stocks_list.append(stock.to_dict())
+        return _stocks_list
+    
+
+    @staticmethod
     def _get_stock(stock_id: str):
         """
         Retrieve the stock object for a given stock ID.
@@ -19,6 +33,17 @@ class StockUtils:
         if not stock:
             raise ValueError(f"Stock with ID {stock_id} not found.")
         return stock
+    
+    @staticmethod
+    def get_stock_details(stock_id: str) -> dict:
+        """
+        Retrieve the details of a stock.
+
+        :param stock_id: The ID of the stock.
+        :return: A dictionary containing stock details.
+        """
+        stock = StockUtils._get_stock(stock_id)
+        return stock.to_dict() if stock else None
 
     @staticmethod
     def calculate_dividend_yield(stock_id:str, stock_price: float) -> float:
