@@ -10,12 +10,12 @@ For a given stock,
     iv. Calculate Volume Weighted Stock Price based on trades in past 15 minutes
 b. Calculate the GBCE All Share Index using the geometric mean of prices for all stocks
 
-Pre-requisites:
+**Pre-requisites:**
 
 Before Setting up the project, ensure you have the following installed on your system:
 
-*Python (3.8+ recommended)
-*Pip (Python package manager)
+* Python (3.8+ recommended)
+* Pip (Python package manager)
 
 
 # Step 1: Install Python and Pip
@@ -92,16 +92,16 @@ The project is a simple stock market simulator that allows users to perform vari
 
 * We already have a pre-defined stocks data & set of formulas that our application would serve the service.
 * Our application should be able to :
-    * a. *Consume incoming trade data/payload:
-        * i. *Assuming it can be flowing in from another internal application real time.
-        * 2. scalable enough to handle other consumption mechanism
-    * b. *Store provide central trade storage (in memory)
-        * i. Should maintain data integrity
-        * 2. Should serve as a single golden source for any data publish/ service
-    * *c. *serve real-time data metrics
-        * *i.  based on static stocks
-        * *ii. real-time trade consumption
-* *Provide unit-test Coverage
+    * A. Consume incoming trade data/payload:
+        * Assuming it can be flowing in from another internal application real time.
+        * scalable enough to handle other consumption mechanism
+    * B. *Store provide central trade storage (in memory)
+        * Should maintain data integrity
+        * Should serve as a single golden source for any data publish/ service
+    * C. Serve real-time data metrics
+        * based on static stocks
+        * real-time trade consumption
+* Provide unit-test Coverage
 
 Following are main components in our application:
 * 1. Trae Publisher: This component is responsible for publishing trade data to the message queue (Kafka).
@@ -135,4 +135,14 @@ Static Stock Data & Calculations
 6. GET /trade/volume-weighted-stock-price: Returns the volume-weighted stock price based on trades in the past 15 trades.
 
 
+
+Stock Data is static and is stored in the `StockRegistry`. The stock data is used to calculate the dividend yield and P/E ratio.
+The stock data is also used to calculate the GBCE All Share Index.
+Trade Data is stored in the `TradeRegistry`.
+Trade data are snapped into the `TradeSnapShotRegistry`.
+The trade snapshot data is used to calculate the volume-weighted stock price.
+
+**You can test if the real time trades are impacting the stock price by using the following endpoints:**
+**GET /trade/volume-weighted-stock-price/<stockId>**
+**The Price would keep changing based on the trades that are being consumed in real time.**
 
