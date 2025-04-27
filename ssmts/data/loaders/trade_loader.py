@@ -2,6 +2,7 @@
 import logging
 
 from ssmts.data.loaders.base_loader import BaseLoader
+from ssmts.data.store.trade_registry import TradeRegistry
 from ssmts.models.trade import Trade
 
 
@@ -16,7 +17,7 @@ class TradeLoader(BaseLoader[Trade]):
     
     PRIMARY_KEY = "tradeId"
     ENTITY: Trade = Trade
-    ENTITY_STORE = None  # The registry where the trade entities will be stored, to be defined later
+    ENTITY_STORE = TradeRegistry  # The registry where the trade entities will be stored, to be defined later
     
     INCOMING_TRADE = []
 

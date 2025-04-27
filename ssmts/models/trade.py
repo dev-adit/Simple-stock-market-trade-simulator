@@ -49,6 +49,19 @@ class Trade(BaseModel):
         )
         return trade
     
+    def to_dict(self):
+        """
+        Converts the Trade instance to a dictionary.
+        """
+        return {
+            'tradeId': self.tradeId,
+            'stockId': self.stockId,
+            'timestamp': self.timeStamp.isoformat(),
+            'quantity': self.quantity,
+            'price': self.price,
+            'indicator': self.indicator
+        }
+    
     def __str__(self):
         """
         Returns a string representation of the Trade instance.
