@@ -53,7 +53,7 @@ class TradePublisher:
             trades = [self.generate_trade() for _ in range(self.batch_size)]
             for trade in trades:
                 self.socket.send_string(f'{trade}')
-                logger.info(f"Published trade: {trade.get('tradeId')}")
+                logger.info(f"{trade['indicator']} {trade['quantity']} trades of {trade['stockId']} at price: {trade['price']} at {trade['timestamp']}")
                 time.sleep(1) #generate a trade every second
             time.sleep(self.interval)
 
