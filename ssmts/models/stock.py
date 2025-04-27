@@ -52,6 +52,22 @@ class Stock(BaseModel):
         stock.currentPrice = data.get('currentPrice')
         return stock
     
+    def to_dict(self):
+        """
+        Converts the Stock instance to a dictionary.
+        
+        :return: A dictionary representation of the Stock instance.
+        """
+        return {
+            'stockId': self.stockId,
+            'symbol': self.symbol,
+            'stockType': self.stockType,
+            'lastDivident': self.lastDivident,
+            'fixedDivident': self.fixedDivident,
+            'parValue': self.parValue,
+            'currentPrice': self.currentPrice
+        }
+    
     def set_current_price(self, currentPrice):
         """
         Sets the current price of the stock.
