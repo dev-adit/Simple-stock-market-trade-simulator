@@ -5,41 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug All Unit Test",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unittest",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "args": [
-                "discover",
-                "-s", "ssmts/tests",
-                "-p", "test_*.py",
-                "-v"
-            ]
-        },
-        {
-            "name": "Debug Flask App",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "flask",
-            "env": {
-            "FLASK_APP": "ssmts/services/market_metrics.py",
-            "FLASK_ENV": "development",
-            "FLASK_RUN_EXTRA_FILES": "/ssmts/services/market_metrics.py",
-            },
-            "args": [
-            "run",
-            "--no-debugger",
-            "--no-reload",
-            "--host=0.0.0.0",
-            "--port=5000"
-            ],
-            "jinja": true
-        },
-
-        {
-            "name": "Debug Trade Consumer",
+            "name": "Real Time Trade Consumer",
             "type": "debugpy",
             "request": "launch",
             "module": "ssmts.services.consumer.trade_sub",
@@ -51,7 +17,7 @@
             },
         },
         {
-            "name": "Debug Trade Producer",
+            "name": "Real Time Trade Publisher",
             "type": "debugpy",
             "request": "launch",
             "module": "ssmts.services.producer.trade_pub",
@@ -61,7 +27,29 @@
                 "PYTHONPATH": "${workspaceFolder}",
                 "LOG_LEVEL": "INFO"
             },
+        },
+        {
+            "name": "RESTer Service",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "ssmts.services.market_metrics",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "LOG_LEVEL": "INFO"
+            }
         }
     ],
+    "compounds": [
+        {
+            "name": "Start/ Debug All Services",
+            "configurations": [
+                "Real Time Trade Consumer",
+                "Real Time Trade Publisher",
+                "RESTer Service"
+            ]
+        }
+    ]   
     
 }

@@ -6,7 +6,6 @@ from flask import Flask, request, jsonify
 
 from ssmts.data.loaders.stock_loader import StockLoader
 from ssmts.services.consumer.trade_snapshot_sub import TradeSnapshotSubscriber
-from  ssmts.services.trade_service import ZMQ_TRADE_SNAPSHOT_SUB_ADDRESS
 from ssmts.utility.stock_utils import StockUtils
 
 
@@ -127,7 +126,7 @@ def calculate_vwsp(stock_id):
 if __name__ == '__main__':
 
     # Initialize the TradeSnapshotSubscriber
-    subscriber = TradeSnapshotSubscriber(address=ZMQ_TRADE_SNAPSHOT_SUB_ADDRESS)
+    subscriber = TradeSnapshotSubscriber(address="tcp://localhost:5556")
 
     # Start the subscriber in a separate thread
     subscriber_thread = threading.Thread(target=subscriber.consume_snapshots)
