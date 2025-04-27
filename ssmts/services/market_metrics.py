@@ -1,9 +1,12 @@
 
 from http import HTTPStatus
+import threading
 import time
 from flask import Flask, request, jsonify
 
 from ssmts.data.loaders.stock_loader import StockLoader
+from ssmts.services.consumer.trade_snapshot_sub import TradeSnapshotSubscriber
+from  ssmts.services.trade_service import ZMQ_TRADE_SNAPSHOT_SUB_ADDRESS
 from ssmts.utility.stock_utils import StockUtils
 
 
@@ -102,5 +105,41 @@ def calculate_gbce_index():
     except Exception as e:
         return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
 
+
+@app.route('/vwsp/<stock_id>', methods=['GET'])
+def calculate_vwsp(stock_id):
+    """
+    Calculate the Volume Weighted Stock Price (VWSP) for a given stock ID.
+    This should be updated realtime based on the incoming trades and snapshot
+    
+    :param stock_id: The ID of the stock.
+    :return: JSON response with the VWSP.
+    """
+    try:
+        # Assuming StockUtils is already imported and available
+        vwsp = StockUtils.calculate_vwsp(stock_id)
+        return jsonify({"Volume Weighted Stock Price": vwsp}), HTTPStatus.OK
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+
+    # Initialize the TradeSnapshotSubscriber
+    subscriber = TradeSnapshotSubscriber(address=ZMQ_TRADE_SNAPSHOT_SUB_ADDRESS)
+
+    # Start the subscriber in a separate thread
+    subscriber_thread = threading.Thread(target=subscriber.consume_snapshots)
+    subscriber_thread.start()
+
+    time.sleep(5)  # Give some time for the subscriber to start
+
+    # Run the Flask application
+    publisher_thread = threading.Thread(target=app.run(debug=True, host='0.0.0.0', port=5000))
+    publisher_thread.start()
+
+    # Wait for both threads to finish
+    publisher_thread.join()
+    subscriber_thread.join()
+    

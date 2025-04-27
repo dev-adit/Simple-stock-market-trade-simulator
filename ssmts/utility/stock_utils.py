@@ -2,6 +2,7 @@
 import math
 from ssmts.config.constants import StockType
 from ssmts.data.store.stock_registry import StockRegistry
+from ssmts.data.store.trade_snapshot_registry import TradeSnapShotRegistry
 
 
 class StockUtils:
@@ -92,4 +93,27 @@ class StockUtils:
         """
         prices = list(map(lambda stock_id: StockRegistry.get(stock_id).currentPrice, StockRegistry.get_all()))
         return StockUtils._geometric_mean(prices)
+    
+    @staticmethod
+    def calculate_vwsp(stock_id: str) -> float:
+        """
+        Calculate the Volume Weighted Stock Price (VWSP) for a given stock ID based on the last 15 trades.
+        this should be updated in real-time based on the incoming trades and snapshot.
+
+        :param stock_id: The ID of the stock.
+        :return: The VWSP.
+        """
+        snapShot = TradeSnapShotRegistry.get(stock_id) ### Get the snapshot of the stock (having latest 15 trades)
+        trades = snapShot.trades if snapShot else []
+        
+        if not trades:
+            raise ValueError(f"No trades found for stock ID {stock_id}.")
+
+        total_price = sum(trade.price * trade.quantity for trade in trades)
+        total_quantity = sum(trade.quantity for trade in trades)
+        
+        if total_quantity == 0:
+            raise ValueError("Total quantity cannot be zero.")
+        
+        return total_price / total_quantity
 

@@ -7,6 +7,7 @@ from datetime import datetime
 from ssmts.config.constants import TradeType
 from ssmts.data.loaders.stock_loader import StockLoader
 from ssmts.data.store.stock_registry import StockRegistry
+from ssmts.utility.trade_utils import generate_unique_id
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -15,7 +16,7 @@ print("Debugging: Logger initialized.")
 logger.info("TradePublisher initialized.")
 
 class TradePublisher:
-    def __init__(self, address="tcp://localhost:5555", batch_size=5, total_trades= 10, interval=1):
+    def __init__(self, address="tcp://localhost:5555", batch_size=10, total_trades= 200, interval=2):
         StockLoader.load()
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PUB)
@@ -32,7 +33,7 @@ class TradePublisher:
 
         stock = random.choice(list(_stocks.keys()))
         action = random.choice([t.value for t in TradeType])
-        trade_id = str(uuid.uuid4())
+        trade_id = generate_unique_id()
         timestamp = datetime.now().isoformat()
         trade = {
             "tradeId": trade_id,
@@ -52,7 +53,8 @@ class TradePublisher:
             trades = [self.generate_trade() for _ in range(self.batch_size)]
             for trade in trades:
                 self.socket.send_string(f'{trade}')
-                logger.info(f"Published trade: {trade}")
+                logger.info(f"Published trade: {trade.get('tradeId')}")
+                time.sleep(1) #generate a trade every second
             time.sleep(self.interval)
 
 if __name__ == "__main__":
