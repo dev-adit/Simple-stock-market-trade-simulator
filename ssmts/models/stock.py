@@ -17,7 +17,8 @@ class Stock(BaseModel):
     """
     Represents a stock with its attributes and methods for manipulation.
     """
-    def __init__(self, stockId=None, symbol=None, stockType=None, lastDivident=None, fixedDivident=None, parValue=None, currentPrice=None):
+    def __init__(self, stockId=None, symbol=None, stockType=None, lastDivident=None, fixedDivident=None,\
+                 parValue=None, currentPrice=None, lastTradeTime=None):
         """
         Initializes a Stock instance with the given attributes.
         
@@ -36,7 +37,16 @@ class Stock(BaseModel):
         self.fixedDivident = fixedDivident if fixedDivident is not None else 0.0
         self.parValue = parValue if parValue is not None else 0.0
         self.currentPrice = currentPrice if currentPrice is not None else 0.0
-    
+        self.lastTradeTime = lastTradeTime if lastTradeTime is not None else None
+        
+    def get_last_trade_time(self):
+        """
+        Returns the last trade time of the stock.
+        
+        :return: The last trade time.
+        """
+        return self.lastTradeTime
+
     @classmethod
     def from_dict(cls, data):
         """
@@ -50,6 +60,7 @@ class Stock(BaseModel):
         stock.fixedDivident = data.get('fixedDivident')
         stock.parValue = data.get('parValue')
         stock.currentPrice = data.get('currentPrice')
+        stock.lastTradeTime = data.get('lastTradeTime')
         return stock
     
     def to_dict(self):
@@ -65,7 +76,8 @@ class Stock(BaseModel):
             'lastDivident': self.lastDivident,
             'fixedDivident': self.fixedDivident,
             'parValue': self.parValue,
-            'currentPrice': self.currentPrice
+            'currentPrice': self.currentPrice,
+            'lastTradeTime': self.lastTradeTime,
         }
     
     def set_current_price(self, currentPrice):

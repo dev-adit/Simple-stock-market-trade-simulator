@@ -4,11 +4,15 @@
 import zmq
 import logging
 
+from ssmts.data.loaders.stock_loader import StockLoader
+from ssmts.data.store.stock_registry import StockRegistry
 from ssmts.data.store.trade_snapshot_registry import TradeSnapShotRegistry
 from ssmts.models.trade import Trade
 
 from ssmts.models.trade_snapshot import TradeSnapShot
 from datetime import datetime
+
+from ssmts.utility.stock_utils import StockUtils
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -35,6 +39,7 @@ class TradeSnapshotSubscriber:
         self.poller.register(self.socket, zmq.POLLIN)
         self.address = address
         logger.info(f"Connected to {address} and subscribed to trade messages.")
+        StockLoader.load()  # Load stock data into the registry (central store)
     
     def consume_snapshots(self):
         while True:
@@ -47,6 +52,8 @@ class TradeSnapshotSubscriber:
                     # Process the trade message here
                     snapshot = TradeSnapShot.from_dict(snapshot)  # Deserialize the trade message
                     TradeSnapShotRegistry.add(snapshot.stockId, snapshot)
+                    vwsp = StockUtils.calculate_vwsp(snapshot.stockId)
+                    StockRegistry.update_stock_price(snapshot.stockId, price=vwsp) #realtime update of stock price
                     logger.info(f"Trade snapshot {snapshot.stockId} updated/added in TradeSnapShotRegistry.")
             except zmq.Again as e:
                 logger.warning(f"Polling timed out: {e}")

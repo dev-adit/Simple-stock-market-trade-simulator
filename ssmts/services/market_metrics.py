@@ -17,8 +17,7 @@ def load_data():
     Load data into the application before the first request.
     This is where you can initialize your data store or perform any setup needed.
     """
-    StockLoader.load() ### Load stock data into the registry (central store)
-    print("Stock data loaded into the registry.")
+    pass
 
 @app.before_request
 def before_request():
@@ -64,7 +63,7 @@ def get_stocks():
     except Exception as e:
         return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
     
-@app.route('/stocks/<stock_id>', methods=['GET'])
+@app.route('/stock/<stock_id>', methods=['GET'])
 def get_stock(stock_id):
     """
     Get details of a specific stock by its ID.
